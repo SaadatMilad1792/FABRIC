@@ -51,7 +51,7 @@ def genFabDf(params):
       for expType in expTypes:
         dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
         dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
-        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in [dataFiles[0]]]
+        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in dataFiles]
         for fc, future in enumerate(futures):
           print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
 

@@ -80,7 +80,25 @@ everyone of them:
 }
 ```
 
+| Sub Module | Parameter                 | Description                                                                           |
+| ---------- | ------------------------- | ------------------------------------------------------------------------------------- |
+| generic    | N/A                       | N/A                                                                                   |
+| process    | inpDirectory              | Path to input directory (NOTE: exclude the folder name)                               |
+| process    | inpFolder                 | Name of the input folder (NOTE: This is a name not a path                             |
+| process    | outDirectory              | Path to output directory (NOTE: exclude the folder name)                              |
+| process    | outFolder                 | Name of the output folder (NOTE: This is a name not a path                            |
+| process    | experimentTypes           | Valid experiment types (Ex. P - Physical Fatigue , M - Mental Fatigue)                |
+| process    | outPickleName             | Name of the output pickle file that is saved in the output directory                  |
+| process    | dfType                    | Input file type (Since FABRIC is based on .bsf, there is no change necessary)         |
+| process    | framePerSecond            | Number of frames in every second of experiment, similar to sampling rate              |
+| process    | parallelProc              | Enables parallel .bsf loading, significantly enhancing the speed of the preprocessing |
+| process    | maxWorker                 | Maximum number of workers (Only when parallelProc is set to True)                     |
+
+
 ### FABRIC Processing Tools
 
 
 ### FABRIC Analytic Tools
+
+
+### References And Acknowledgement
