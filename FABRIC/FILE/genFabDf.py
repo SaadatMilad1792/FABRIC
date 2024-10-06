@@ -45,15 +45,16 @@ def genFabDf(params):
       result = bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile)
       with lock:
         DataFrame.append(result)
+        print(f"{dataFile} [STATUS: DONE]")
 
-    with ThreadPoolExecutor(max_workers = maxWorker) as executor:
+    with ThreadPoolExecutor(max_workers=maxWorker) as executor:
       for expType in expTypes:
         dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
         dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
-        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in dataFiles]
+        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in [dataFiles[0]]]
         for fc, future in enumerate(futures):
           print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
-      
+
       for future in futures:
         future.result()
   

@@ -75,7 +75,7 @@ everyone of them:
     "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
     "outPickleName": "UNIVERSAL_FABRIC",
     "dfType": "bsf", "framePerSecond": 1000,
-    "parallelProc": True, "maxWorker": 32,
+    "parallelProc": True, "maxWorker": 48,
   },
 }
 ```
