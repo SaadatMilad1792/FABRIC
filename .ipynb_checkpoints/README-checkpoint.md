@@ -47,7 +47,38 @@ and make sure the input directory is where your input data is, the orientation o
 ```
 
 ### Parameter Manipulation
+In order to properly understand how FABRIC works, you need to be able to fully understand how the parameters are passed to 
+FABRIC sub modules. All parameters are stored in a .yaml file called params.yaml. When passed to each sub module, the sub
+module will select the parameters for that specific sub module, and then it will have accessm to them all. In order to load
+the params.yaml, simply create the parameters file, and load it with the following buildin function in FABRIC:
+```python
+# Ex. load the entire parameter .yaml file
+params = FABRIC.loadArgs('./{directory to params}/params.yaml')
 
+# Ex. select only the paremeters for process sub module
+process_params = params["process"]
+```
+
+Here is the default values stored in the paremeter file, in this section we will provide in depth explanation for each and
+everyone of them:
+```yaml
+{
+  ## -- 1.0: [generic: LAUNCH] generic globally shared information -- ##
+  "generic": {
+    
+  },
+  
+  ## -- 2.0: [process: LAUNCH] process core parameters -- ##
+  "process": {
+    "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "raw",
+    "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
+    "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
+    "outPickleName": "UNIVERSAL_FABRIC",
+    "dfType": "bsf", "framePerSecond": 1000,
+    "parallelProc": True, "maxWorker": 32,
+  },
+}
+```
 
 ### FABRIC Processing Tools
 
