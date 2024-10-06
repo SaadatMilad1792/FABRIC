@@ -36,27 +36,33 @@ def genFabDf(params):
       dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
       dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
       for fc, dataFile in enumerate(dataFiles):
-        print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
+        print(f"{dataFiles[fc]}".rjust(24), f" | Progress: ".rjust(12),
+              f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".rjust(16))
         DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
    
   elif parallelProc:
-    lock = threading.Lock()
     def bsObjectCompact(expType, dataFile):
       result = bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile)
-      with lock:
-        DataFrame.append(result)
-        print(f"{dataFile} [STATUS: DONE]")
+      print(f"{dataFile} [STATUS: DONE]")
+      return result
 
-    with ThreadPoolExecutor(max_workers=maxWorker) as executor:
+    allResults = []
+    with ThreadPoolExecutor(max_workers = maxWorker) as executor:
+      futures = []
       for expType in expTypes:
         dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
         dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
-        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in dataFiles]
-        for fc, future in enumerate(futures):
-          print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
+
+        for fc, dataFile in enumerate(dataFiles):
+          futures.append(executor.submit(bsObjectCompact, expType, dataFile))
+          print(f"{dataFiles[fc]}".rjust(24), f" | Progress: ".rjust(12),
+                f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".rjust(16))
 
       for future in futures:
-        future.result()
+        result = future.result()
+        allResults.append(result)
+
+    DataFrame.extend(allResults)
   
   else:
     sys.exit(f"Invalid parallel type. Valid choices: ['True', 'False']")
