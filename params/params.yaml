@@ -12,7 +12,7 @@
     "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "raw",
     "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
     "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
-    "dfType": "bsf",
+    "dfType": "bsf", "framePerSecond": 1000,
     
     
   },
