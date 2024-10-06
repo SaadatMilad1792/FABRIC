@@ -33,6 +33,7 @@ def genFabDf(params):
     for fc, dataFile in enumerate(dataFiles):
       print(f"Processing: {expType} -> {dataFile}: [{(100 * (fc + 1) / len(dataFiles)):.3f} %]", end = " " * 20 + "\r")
       DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
+      break
   
   DataFrame = pd.concat(DataFrame).reset_index(drop = True)
   DataFrame.to_pickle(os.path.join(outDirectory, outFolder, 'UNIVERSAL_FABRIC.pkl.gz'), compression = 'gzip')
