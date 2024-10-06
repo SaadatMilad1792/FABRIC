@@ -1,5 +1,6 @@
 # nohup python FABRIC.py &
 # nohup python FABRIC.py > /dev/null 2>&1 &
+# nohup python FABRIC.py > output.log 2>&1 &
 
 import FABRIC
 
@@ -8,5 +9,4 @@ def main():
   FABRIC.genFabDf(params)
 
 if __name__ == "__main__":
-  print("Hello")
   main()

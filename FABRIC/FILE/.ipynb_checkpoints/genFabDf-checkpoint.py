@@ -3,7 +3,9 @@
 #######################################################################################################################
 import os
 import sys
+import threading
 from ..FILE import *
+from concurrent.futures import ThreadPoolExecutor
 
 #######################################################################################################################
 ## -- binary stream object generator -- ###############################################################################
@@ -11,6 +13,8 @@ from ..FILE import *
 def genFabDf(params):
   
   subParamObject = params["process"]
+  outPickleName = subParamObject["outPickleName"]
+  parallelProc, maxWorker = subParamObject["parallelProc"], subParamObject["maxWorker"]
   inpDirectory, inpFolder = subParamObject["inpDirectory"], subParamObject["inpFolder"]
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
   experimentTypes, dfType = subParamObject["experimentTypes"], subParamObject["dfType"]
@@ -27,14 +31,36 @@ def genFabDf(params):
     sys.exit(f"Directory '{outDirectory}' is invalid. Add a valid directory in 'params -> process -> outDirectory'")
     
   DataFrame = []
-  for expType in expTypes:
-    dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
-    dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
-    for fc, dataFile in enumerate(dataFiles):
-      print(f"Processing: {expType} -> {dataFile}: [{(100 * (fc + 1) / len(dataFiles)):.3f} %]", end = " " * 20 + "\r")
-      DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
-      break
+  if not parallelProc:
+    for expType in expTypes:
+      dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
+      dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
+      for fc, dataFile in enumerate(dataFiles):
+        print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
+        DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
+   
+  elif parallelProc:
+    lock = threading.Lock()
+    def bsObjectCompact(expType, dataFile):
+      result = bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile)
+      with lock:
+        DataFrame.append(result)
+
+    with ThreadPoolExecutor(max_workers = maxWorker) as executor:
+      for expType in expTypes:
+        dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
+        dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
+        futures = [executor.submit(bsObjectCompact, expType, dataFile) for dataFile in dataFiles]
+        for fc, future in enumerate(futures):
+          print(f"Process: {dataFiles[fc]}: [{(fc + 1):04} / {len(dataFiles):04} %]")
+      
+      for future in futures:
+        future.result()
   
+  else:
+    sys.exit(f"Invalid parallel type. Valid choices: ['True', 'False']")
+  
+  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz")
   DataFrame = pd.concat(DataFrame).reset_index(drop = True)
-  DataFrame.to_pickle(os.path.join(outDirectory, outFolder, 'UNIVERSAL_FABRIC.pkl.gz'), compression = 'gzip')
+  DataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
   return DataFrame
