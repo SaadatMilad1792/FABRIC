@@ -9,9 +9,10 @@
   
   ## -- 2.0: [process: LAUNCH] process core parameters -- ##
   "process": {
-    "inpDirectory": "/esplabdata/FABRIC/", "inpFolder": "raw",
-    "outDirectory": "/esplabdata/FABRIC/", "outFolder": "prc",
-    "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
+    "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "raw",
+    "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
+    "experimentTypes": ["SM", "SP", "MP", "M", "P"], "dfType": "bsf",
+    
     
   },
 }

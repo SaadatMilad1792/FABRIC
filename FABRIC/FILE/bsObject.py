@@ -1,6 +1,7 @@
 #######################################################################################################################
 ## -- necessary libraries -- ##########################################################################################
 #######################################################################################################################
+import os
 import sys
 from ..FILE import *
 
@@ -12,10 +13,10 @@ def bsObject(params):
   subParamObject = params["process"]
   inpDirectory, inpFolder = subParamObject["inpDirectory"], subParamObject["inpFolder"]
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
-  experimentTypes = subParamObject["experimentTypes"]
+  experimentTypes, dfType = subParamObject["experimentTypes"], subParamObject["dfType"]
     
-  expType = dirSweep(inpDirectory + inpFolder)
-  if not set(expType).issubset(set(experimentTypes)):
+  expTypes = dirSweep(os.path.join(inpDirectory, inpFolder))
+  if not set(expTypes).issubset(set(experimentTypes)):
     sys.exit(f"Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
 
   if os.path.isdir(outDirectory):
@@ -24,4 +25,10 @@ def bsObject(params):
       os.makedirs(outFullPath)
   else:
     sys.exit(f"Directory '{outDirectory}' is invalid. Add a valid directory in 'params -> process -> outDirectory'")
+    
+    
+  for expType in expTypes:
+    dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
+    dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
+    break
     
