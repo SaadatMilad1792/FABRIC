@@ -1,0 +1,16 @@
+#######################################################################################################################
+## -- 1: parameters object file (change parameters here) -- ###########################################################
+#######################################################################################################################
+{
+  ## -- 1.0: [generic: LAUNCH] generic globally shared information -- ##
+  "generic": {
+    
+  },
+  
+  ## -- 2.0: [process: LAUNCH] process core parameters -- ##
+  "process": {
+    "inpDirectory": "/esplabdata/FABRIC/", "inpFolder": "raw",
+    "outDirectory": "/esplabdata/FABRIC/", "outFolder": "prc",
+    
+  },
+}
