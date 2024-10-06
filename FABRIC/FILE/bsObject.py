@@ -14,14 +14,14 @@ def bsObject(params, directory, fileName):
   
   subParamObject = params["process"]
   codeName = fileName.split(".")[0].split("_")
-  framePerSecond = subParamObject["framePerSecond"]
+  framePerSecond, verbose = subParamObject["framePerSecond"], subParamObject["verbose"]
   subId, expType, expStage, expCond = codeName[0], codeName[1], codeName[2], list(codeName[3])
   expName, stabilityStatus, eyeStatus, trial = expCond[0], expCond[1], expCond[2], expCond[3]
   data, _, _ = loadbsf(os.path.join(directory, fileName), plot = False)
   
   dataPacket = []
   for i in range(len(data)):
-    if (i + 1) % 1000 == 0:
+    if (i + 1) % 1000 == 0 and verbose:
       print(f"Iter {(i + 1)}, thread: {threading.get_ident()}")
     
     dataPacket.append({

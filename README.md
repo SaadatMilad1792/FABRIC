@@ -76,7 +76,7 @@ everyone of them:
     "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
     "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
     "outPickleName": "UNIVERSAL_FABRIC",
-    "dfType": "bsf", "framePerSecond": 1000,
+    "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
     "parallelProc": True, "maxWorker": 48,
   },
 }
@@ -93,6 +93,7 @@ everyone of them:
 | process    | outPickleName             | Name of the output pickle file that is saved in the output directory                  |
 | process    | dfType                    | Input file type (Since FABRIC is based on .bsf, there is no change necessary)         |
 | process    | framePerSecond            | Number of frames in every second of experiment, similar to sampling rate              |
+| process    | verbose                   | Provides details regarding threads for parallel debugging                             |
 | process    | parallelProc              | Enables parallel .bsf loading, significantly enhancing the speed of the preprocessing |
 | process    | maxWorker                 | Maximum number of workers (Only when parallelProc is set to True)                     |
 
