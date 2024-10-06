@@ -36,14 +36,14 @@ def genFabDf(params):
       dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
       dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
       for fc, dataFile in enumerate(dataFiles):
-        print(f"{dataFiles[fc]}".rjust(24), f" | Progress: ".rjust(12),
-              f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".rjust(16))
+        print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
+              f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16))
         DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
    
   elif parallelProc:
     def bsObjectCompact(expType, dataFile):
       result = bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile)
-      print(f"{dataFile} [STATUS: DONE]")
+      print(f"{dataFile}".ljust(24), "-> [STATUS: DONE]".ljust(16))
       return result
 
     allResults = []
@@ -55,8 +55,8 @@ def genFabDf(params):
 
         for fc, dataFile in enumerate(dataFiles):
           futures.append(executor.submit(bsObjectCompact, expType, dataFile))
-          print(f"{dataFiles[fc]}".rjust(24), f" | Progress: ".rjust(12),
-                f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".rjust(16))
+          print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
+                f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16))
 
       for future in futures:
         result = future.result()
