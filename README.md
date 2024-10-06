@@ -43,7 +43,9 @@ and make sure the input directory is where your input data is, the orientation o
 │   │   ├── 1001_expType2_expStage1_expCondition1.bsf
 │   │   ├── ...
 │
-│   ├── ...
+│   ├── .../
+│   │   ├── [...].bsf
+│   │   ├── [...].bsf
 ```
 
 ### Parameter Manipulation
