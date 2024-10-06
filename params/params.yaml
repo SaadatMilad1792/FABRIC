@@ -12,7 +12,7 @@
     "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "raw",
     "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
     "experimentTypes": ["SM", "SP", "MP", "M", "P"], 
-    "outPickleName": "UNIVERSAL_FABRIC",
+    "outPickleName": "UNIVERSAL_FABRIC", "funcStat": False,
     "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
     "parallelProc": True, "maxWorker": 48,
   },

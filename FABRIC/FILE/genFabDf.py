@@ -13,14 +13,19 @@ from concurrent.futures import ThreadPoolExecutor
 def genFabDf(params):
   
   subParamObject = params["process"]
-  outPickleName = subParamObject["outPickleName"]
+  outPickleName, funcStat = subParamObject["outPickleName"], subParamObject["funcStat"]
   parallelProc, maxWorker = subParamObject["parallelProc"], subParamObject["maxWorker"]
   inpDirectory, inpFolder = subParamObject["inpDirectory"], subParamObject["inpFolder"]
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
   experimentTypes, dfType = subParamObject["experimentTypes"], subParamObject["dfType"]
+  
+  if not funcStat:
+    print(f"[+] FABRIC: genFabDf marked as deactive, modify param.yaml for activation.")
+    return
     
   expTypes = dirSweep(os.path.join(inpDirectory, inpFolder))
   if not set(expTypes).issubset(set(experimentTypes)):
+    print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
     sys.exit(f"Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
 
   if os.path.isdir(outDirectory):
@@ -28,7 +33,8 @@ def genFabDf(params):
     if not os.path.exists(outFullPath):
       os.makedirs(outFullPath)
   else:
-    sys.exit(f"Directory '{outDirectory}' is invalid. Add a valid directory in 'params -> process -> outDirectory'")
+    print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
+    sys.exit(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     
   DataFrame = []
   if not parallelProc:
@@ -65,7 +71,8 @@ def genFabDf(params):
     DataFrame.extend(allResults)
   
   else:
-    sys.exit(f"Invalid parallel type. Valid choices: ['True', 'False']")
+    print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
+    sys.exit(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
   
   print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz")
   DataFrame = pd.concat(DataFrame).reset_index(drop = True)
