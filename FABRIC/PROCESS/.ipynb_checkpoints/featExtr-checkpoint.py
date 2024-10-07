@@ -20,18 +20,18 @@ def featExtr(params):
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
   
   if not funcStat:
-    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.")
+    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.", flush = True)
     return
   
   dataFrame = pd.read_pickle(os.path.join(inpDirectory, inpFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
-  print(f"[+] FABRIC Data Frame Successfully Loaded.")
+  print(f"[+] FABRIC Data Frame Successfully Loaded.", flush = True)
   
   currentGroup = 0
   grouped = dataFrame.groupby(['subId', 'expType', 'expStage', 'expTrial', 'expName', 'stabilityStatus', 'eyeStatus'])
   for name, group in grouped:
     
     currentGroup += 1
-    print("Extracted: ", "[", currentGroup, "/", len(grouped), "]")
+    print("Extracted: ", "[", currentGroup, "/", len(grouped), "]", flush = True)
     group = group.copy()
     COPx = group["My"] / group["Fz"]
     COPy = group["Mx"] / group["Fz"]
@@ -51,7 +51,7 @@ def featExtr(params):
     for key, value in features.items():
       dataFrame.loc[group.index, key] = value
   
-  print(f"FABRIC [STATUS: DONE] -> Extracted Features f'{outPickleName}_FT.pkl.gz")
+  print(f"FABRIC [STATUS: DONE] -> Extracted Features f'{outPickleName}_FT.pkl.gz", flush = True)
   dataFrame = dataFrame.reset_index(drop = True)
   dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_FT.pkl.gz'), compression = 'gzip')
   return dataFrame
