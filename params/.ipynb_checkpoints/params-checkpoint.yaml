@@ -1,5 +1,5 @@
 #######################################################################################################################
-## -- 1: parameters object file (change parameters here) -- ###########################################################
+## -- parameters object file (change parameters here) -- ##############################################################
 #######################################################################################################################
 {
   ## -- 1.0: [generic: LAUNCH] generic globally shared information -- ##
@@ -16,4 +16,9 @@
     "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
     "parallelProc": True, "maxWorker": 48,
   },
+  
+  ## -- 3.0: [featExt: LAUNCH] extracts balance features -- ##
+  "featExt": {
+    "funcStat": True,
+  }
 }
