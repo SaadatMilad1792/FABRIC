@@ -20,20 +20,18 @@ def featExtr(params):
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
   
   if not funcStat:
-    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.", flush=True)
+    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.", flush = True)
     return
   
   dataFrame = pd.read_pickle(os.path.join(inpDirectory, inpFolder, f'{outPickleName}.pkl.gz'), compression='gzip')
-  print(f"[+] FABRIC Data Frame Successfully Loaded.", flush=True)
+  print(f"[+] FABRIC Data Frame Successfully Loaded.", flush = True)
   
   currentGroup = 0
   grouped = dataFrame.groupby(['subId', 'expType', 'expStage', 'expTrial', 'expName', 'stabilityStatus', 'eyeStatus'])
   
   validGroups = []
   for name, group in grouped:
-    
     currentGroup += 1
-    print("Extracted: ", "[", currentGroup, "/", len(grouped), "]", flush=True)
     
     try:
       group = group.copy()
@@ -47,19 +45,19 @@ def featExtr(params):
       stato = Stabilogram()
       stato.from_array(array=COP, original_frequency=framePerSecond)
       features = compute_all_features(stato, params_dic={"sway_density_radius": 0.3})
+      print("Extracted: ", "[", currentGroup, "/", len(grouped), "]", flush = True)
       
       for key, value in features.items():
         dataFrame.loc[group.index, key] = value
         
-      validGroups.extend(group.index)  # Add valid group indices for final inclusion
+      validGroups.extend(group.index)
       
     except Exception as e:
-      print(f"Skipping group {name} due to error: {e}", flush=True)
+      print(f"[!] Skipping group {name} due to error: {e}", flush = True)
       continue
   
-  # Keep only the valid indices in the data frame
   dataFrame = dataFrame.loc[validGroups]
-  print(f"FABRIC [STATUS: DONE] -> Extracted Features '{outPickleName}_FT.pkl.gz'", flush=True)
+  print(f"FABRIC [STATUS: DONE] -> Extracted Features '{outPickleName}_FT.pkl.gz'", flush = True)
   
   dataFrame = dataFrame.reset_index(drop=True)
   dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_FT.pkl.gz'), compression='gzip')
