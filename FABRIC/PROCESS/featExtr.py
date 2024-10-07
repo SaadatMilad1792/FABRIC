@@ -20,38 +20,48 @@ def featExtr(params):
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
   
   if not funcStat:
-    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.", flush = True)
+    print(f"[+] FABRIC: featExtr marked as deactive, modify param.yaml for activation.", flush=True)
     return
   
-  dataFrame = pd.read_pickle(os.path.join(inpDirectory, inpFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
-  print(f"[+] FABRIC Data Frame Successfully Loaded.", flush = True)
+  dataFrame = pd.read_pickle(os.path.join(inpDirectory, inpFolder, f'{outPickleName}.pkl.gz'), compression='gzip')
+  print(f"[+] FABRIC Data Frame Successfully Loaded.", flush=True)
   
   currentGroup = 0
   grouped = dataFrame.groupby(['subId', 'expType', 'expStage', 'expTrial', 'expName', 'stabilityStatus', 'eyeStatus'])
+  
+  validGroups = []
   for name, group in grouped:
     
     currentGroup += 1
-    print("Extracted: ", "[", currentGroup, "/", len(grouped), "]", flush = True)
-    group = group.copy()
-    COPx = group["My"] / group["Fz"]
-    COPy = group["Mx"] / group["Fz"]
-
-    COPx = 100 * (COPx - np.mean(COPx))
-    COPy = 100 * (COPy - np.mean(COPy))
-    COP = np.array([np.array(COPx), np.array(COPy)]).T
+    print("Extracted: ", "[", currentGroup, "/", len(grouped), "]", flush=True)
     
-    dataFrame.loc[group.index, "COPx"] = COPx
-    dataFrame.loc[group.index, "COPy"] = COPy
-    # dataFrame.dropna(subset = ["COPx", "COPy"], inplace = True)
-    
-    stato = Stabilogram()
-    stato.from_array(array = COP, original_frequency = framePerSecond)
-    features = compute_all_features(stato, params_dic = {"sway_density_radius": 0.3})
-    
-    for key, value in features.items():
-      dataFrame.loc[group.index, key] = value
+    try:
+      group = group.copy()
+      COPx = 100 * ((group["My"] / group["Fz"]) - np.mean(group["My"] / group["Fz"]))
+      COPy = 100 * ((group["Mx"] / group["Fz"]) - np.mean(group["Mx"] / group["Fz"]))
+      COP = np.array([np.array(COPx), np.array(COPy)]).T
+      
+      dataFrame.loc[group.index, "COPx"] = COPx
+      dataFrame.loc[group.index, "COPy"] = COPy
+      
+      stato = Stabilogram()
+      stato.from_array(array=COP, original_frequency=framePerSecond)
+      features = compute_all_features(stato, params_dic={"sway_density_radius": 0.3})
+      
+      for key, value in features.items():
+        dataFrame.loc[group.index, key] = value
+        
+      validGroups.extend(group.index)  # Add valid group indices for final inclusion
+      
+    except Exception as e:
+      print(f"Skipping group {name} due to error: {e}", flush=True)
+      continue
   
-  print(f"FABRIC [STATUS: DONE] -> Extracted Features f'{outPickleName}_FT.pkl.gz", flush = True)
-  dataFrame = dataFrame.reset_index(drop = True)
-  dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_FT.pkl.gz'), compression = 'gzip')
+  # Keep only the valid indices in the data frame
+  dataFrame = dataFrame.loc[validGroups]
+  print(f"FABRIC [STATUS: DONE] -> Extracted Features '{outPickleName}_FT.pkl.gz'", flush=True)
+  
+  dataFrame = dataFrame.reset_index(drop=True)
+  dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_FT.pkl.gz'), compression='gzip')
+  
   return dataFrame
