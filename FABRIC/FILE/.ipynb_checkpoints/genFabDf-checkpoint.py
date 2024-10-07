@@ -36,7 +36,7 @@ def genFabDf(params):
     print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     sys.exit(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     
-  DataFrame = []
+  dataFrame = []
   if not parallelProc:
     for expType in expTypes:
       dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
@@ -44,7 +44,7 @@ def genFabDf(params):
       for fc, dataFile in enumerate(dataFiles):
         print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
               f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16))
-        DataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
+        dataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
    
   elif parallelProc:
     def bsObjectCompact(expType, dataFile):
@@ -68,13 +68,13 @@ def genFabDf(params):
         result = future.result()
         allResults.append(result)
 
-    DataFrame.extend(allResults)
+    dataFrame.extend(allResults)
   
   else:
     print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
     sys.exit(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
   
   print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz")
-  DataFrame = pd.concat(DataFrame).reset_index(drop = True)
-  DataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
-  return DataFrame
+  dataFrame = pd.concat(dataFrame).reset_index(drop = True)
+  dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
+  return dataFrame

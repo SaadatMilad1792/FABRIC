@@ -19,6 +19,9 @@
   
   ## -- 3.0: [featExt: LAUNCH] extracts balance features -- ##
   "featExt": {
-    "funcStat": True,
+    "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "prc",
+    "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
+    "outPickleName": "UNIVERSAL_FABRIC", "funcStat": True, 
+    "framePerSecond": 1000,
   }
 }
