@@ -14,7 +14,7 @@
     "experimentTypes": ["SM", "SP", "MP", "M", "P"],
     "outPickleName": "UNIVERSAL_FABRIC", "funcStat": True,
     "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
-    "parallelProc": True, "maxWorker": 48, "featExtr": True,
+    "parallelProc": True, "maxWorker": 12, "featExtr": True,
     "debuggingMode": False,
   },
 }

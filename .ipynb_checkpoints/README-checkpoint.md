@@ -5,8 +5,8 @@ Fatigue and Balance Relationship Interaction Computation (F.A.B.R.I.C)
 
 |     | Section                                                                 | Description                                         | Last updated   |
 | --- | ----------------------------------------------------------------------- | --------------------------------------------------- | -------------- |
-|  1  | [Getting Started With FABRIC](#Getting-Started-With-FABRIC)             | Instructions on getting started with FABRIC         | 10/06/2024     |
-|  2  | [Parameter Manipulation](#Parameter-Manipulation)                       | Instructions on changing the parameters accordingly | 10/07/2024     |
+|  1  | [Getting Started With FABRIC](#Getting-Started-With-FABRIC)             | Instructions on getting started with FABRIC         | 10/07/2024     |
+|  2  | [Parameter Manipulation](#Parameter-Manipulation)                       | Instructions on changing the parameters accordingly | 10/08/2024     |
 |  3  | [FABRIC Processing Tools](#FABRIC-Processing-Tools)                     | FABRIC Guide on available processing tools          | 10/06/2024     |
 |  4  | [FABRIC Analytic Tools](#FABRIC-Analytic-Tools)                         | FABRIC Guide on available analytic tools            | 10/06/2024     |
 |  5  | [References And Acknowledgement](#References-And-Acknowledgement)       | FABRIC References And Acknowledgement               | 10/06/2024     |
@@ -117,6 +117,12 @@ altering these values in the `.yaml` file, unless you explicitly intend to do so
 | process    | maxWorker                 | Maximum number of workers (Only when parallelProc is set to True)                       |
 | process    | featExtr                  | Enables or disables feature extraction on the data frame                                |
 | process    | debuggingMode             | Limits the size of input files to a single `.bsf` file for debugging                    |
+
+**NOTE:** FABRIC leverages parallelism to optimize performance. However, it’s essential to find the right balance in CPU allocation; having 
+too few CPUs can be as detrimental as having too many due to the communication overhead between them. Carefully choose the `maxWorker` value 
+to enhance stability. For an optimal experience, regularly monitor the `output.log` file to ensure that `.bsf` files are being loaded concurrently 
+while others are processed. If you observe a high number of files loading but only a few marked as `DONE`, consider adjusting the `maxWorkers`. 
+This hyperparameter is specific to your system configuration, so optimizing it is your responsibility as the user.
 
 
 ### FABRIC Processing Tools
