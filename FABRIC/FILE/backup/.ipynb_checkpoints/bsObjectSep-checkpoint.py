@@ -2,8 +2,6 @@
 ## -- necessary libraries -- ##########################################################################################
 #######################################################################################################################
 import os
-import sys
-import threading
 import pandas as pd
 from ..SUPPORT import *
 
@@ -43,7 +41,7 @@ def bsObject(params, directory, fileName):
 
   dataPacket["COPx"], dataPacket["COPy"] = COPx, COPy
 
-  featurePacket = {
+  featurePacket = pd.DataFrame([{
     "subId": subId,
     "expType": expType,
     "expStage": expStage,
@@ -51,8 +49,7 @@ def bsObject(params, directory, fileName):
     "expName": "Balance" if expName == "B" else "Unknown",
     "stabilityStatus": "Stable" if stabilityStatus == "S" else "Unstable" if stabilityStatus == "U" else "Unknown",
     "eyeStatus": "Closed" if eyeStatus == "C" else "Open" if eyeStatus == "O" else "Unknown",
-    "dataPacket": dataPacket
-  }
+  }])
 
   if featExtr:
     try:
@@ -66,6 +63,6 @@ def bsObject(params, directory, fileName):
     except Exception as e:
       print(f"[-] Failed to extract features due to invalid values: {fileName}")
       print(str(e))
-      sys.exit(f"[-] Failed to extract features due to invalid values: {fileName}")
+      return
 
-  return pd.DataFrame([featurePacket])
+  return [dataPacket, featurePacket]

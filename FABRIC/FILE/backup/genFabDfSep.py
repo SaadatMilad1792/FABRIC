@@ -3,9 +3,8 @@
 #######################################################################################################################
 import os
 import sys
-import multiprocessing
 from ..FILE import *
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 #######################################################################################################################
 ## -- helper function for multiprocessing -- ##########################################################################
@@ -34,12 +33,12 @@ def genFabDf(params):
   experimentTypes, dfType = subParamObject["experimentTypes"], subParamObject["dfType"]
   
   if not funcStat:
-    print(f"[+] FABRIC: genFabDf marked as deactive, modify param.yaml for activation.")
+    print(f"[+] FABRIC: genFabDf marked as deactive, modify param.yaml for activation.", flush = True)
     return
     
   expTypes = dirSweep(os.path.join(inpDirectory, inpFolder))
   if not set(expTypes).issubset(set(experimentTypes)):
-    print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
+    print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}", flush = True)
     sys.exit(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
   elif debuggingMode:
     expTypes = expTypes[:1]
@@ -49,10 +48,10 @@ def genFabDf(params):
     if not os.path.exists(outFullPath):
       os.makedirs(outFullPath)
   else:
-    print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
+    print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'", flush = True)
     sys.exit(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     
-  dataFrame = []
+  dataFrameRaw, dataFrameExt = [], []
   if not parallelProc:
     for expType in expTypes:
       dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
@@ -63,12 +62,12 @@ def genFabDf(params):
     
       for fc, dataFile in enumerate(dataFiles):
         print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
-              f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16))
+              f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16), flush = True)
         dataFrame.append(bsObject(params, os.path.join(inpDirectory, inpFolder, expType), dataFile))
    
   elif parallelProc:
-    allResults = []
-    with ProcessPoolExecutor(max_workers = maxWorker) as executor:
+    allResultsRaw, allResultsExt = [], []
+    with ThreadPoolExecutor(max_workers = maxWorker) as executor:
       futures = []
       for expType in expTypes:
         dataFiles = dirSweep(os.path.join(inpDirectory, inpFolder, expType))
@@ -80,20 +79,27 @@ def genFabDf(params):
         for fc, dataFile in enumerate(dataFiles):
           futures.append(executor.submit(bsObjectCompact, params, expType, dataFile))
           print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
-                f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16))
+                f"[{(fc + 1):04} / {len(dataFiles):04}] -> ({(100 * (fc + 1) / len(dataFiles)):.3f} %)".ljust(16), flush = True)
 
       for future in futures:
         result = future.result()
         if result is not None:
-          allResults.append(result)
+          allResultsRaw.append(result[0])
+          allResultsExt.append(result[1])
 
-    dataFrame.extend(allResults)
+    dataFrameRaw.extend(allResultsRaw)
+    dataFrameExt.extend(allResultsExt)
   
   else:
-    print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
+    print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']", flush = True)
     sys.exit(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
   
-  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz", flush = True)
-  dataFrame = pd.concat(dataFrame).reset_index(drop = True)
-  dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
-  return dataFrame
+  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}_RAW.pkl.gz", flush = True)
+  dataFrameRaw = pd.concat(dataFrameRaw).reset_index(drop = True)
+  dataFrameRaw.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_RAW.pkl.gz'), compression = 'gzip')
+  
+  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}_EXT.pkl.gz", flush = True)
+  dataFrameExt = pd.concat(dataFrameExt).reset_index(drop = True)
+  dataFrameExt.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}_EXT.pkl.gz'), compression = 'gzip')
+  
+  return dataFrameRaw, dataFrameExt

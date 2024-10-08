@@ -84,7 +84,8 @@ def genFabDf(params):
 
       for future in futures:
         result = future.result()
-        allResults.append(result)
+        if result is not None:
+          allResults.append(result)
 
     dataFrame.extend(allResults)
   
