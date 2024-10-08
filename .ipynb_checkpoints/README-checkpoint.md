@@ -136,7 +136,7 @@ features are extracted for deeper insights.
 Here is how the processing tool handles the raw `.bsf` files, and generates a pandas dataframe, and stores it at the output directory location.
 The image below shows the information stored in each row of the dataframe:
 
-![Example image of a single row, in the dataframe](./imgSrcMd/DataFrameStructure.png)
+![Example image of a single row, in the dataframe](./images/markdown/DataFrameStructure.png)
 
 
 
