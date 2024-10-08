@@ -7,7 +7,6 @@ import FABRIC
 def main():
   params = FABRIC.loadArgs('./params/params.yaml')
   FABRIC.genFabDf(params)
-  FABRIC.featExtr(params)
 
 if __name__ == "__main__":
   main()

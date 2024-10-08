@@ -1,0 +1,4 @@
+nohup: ignoring input
+1008_MP_POST_BSC1.bsf     | Progress:  [0001 / 0001] -> (100.000 %)
+1008_MP_POST_BSC1.bsf    -> [STATUS: DONE]
+FABRIC [STATUS: DONE] -> Generated f'UNIVERSAL_FABRIC.pkl.gz
