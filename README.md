@@ -133,6 +133,13 @@ dataset for further analysis. The process begins with FABRIC generating an initi
 Once the COPx and COPy values are derived, they are passed into the feature extraction module from [stato](add-reference-fix-me), where balance
 features are extracted for deeper insights.
 
+Here is how the processing tool handles the raw `.bsf` files, and generates a pandas dataframe, and stores it at the output directory location.
+The image below shows the information stored in each row of the dataframe:
+
+![Example image of a single row, in the dataframe](./imgSrcMd/DataFrameStructure.png)
+
+
+
 
 ### FABRIC Analytic Tools
 

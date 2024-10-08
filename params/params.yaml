@@ -15,6 +15,6 @@
     "outPickleName": "test_UNIVERSAL_FABRIC", "funcStat": True,
     "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
     "parallelProc": True, "maxWorker": 16, "featExtr": True,
-    "debuggingMode": True,
+    "debuggingMode": False,
   },
 }
