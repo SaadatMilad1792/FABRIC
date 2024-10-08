@@ -62,7 +62,7 @@ def bsObject(params, directory, fileName):
           dataPacket[key] = False
         
     except:
-      print(f"[-] Failed to extract features due to invalid values: {fileName}", flush = True)
+      print(f"[-] Failed to extract features due to invalid values: {fileName}")
       sys.exit(f"[-] Failed to extract features due to invalid values: {fileName}")
     
   return dataPacket

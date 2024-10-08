@@ -26,7 +26,7 @@ def genFabDf(params):
     
   expTypes = dirSweep(os.path.join(inpDirectory, inpFolder))
   if not set(expTypes).issubset(set(experimentTypes)):
-    print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}", flush = True)
+    print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
     sys.exit(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
   elif debuggingMode:
     expTypes = expTypes[:1]
@@ -36,7 +36,7 @@ def genFabDf(params):
     if not os.path.exists(outFullPath):
       os.makedirs(outFullPath)
   else:
-    print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'", flush = True)
+    print(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     sys.exit(f"[-] Directory '{outDirectory}' is invalid. Add a valid directory in 'params > process > outDirectory'")
     
   dataFrame = []
@@ -81,10 +81,10 @@ def genFabDf(params):
     dataFrame.extend(allResults)
   
   else:
-    print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']", flush = True)
+    print(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
     sys.exit(f"[-] Invalid parallel type. Valid choices: ['True', 'False']")
   
-  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz", flush = True)
+  print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz")
   dataFrame = pd.concat(dataFrame).reset_index(drop = True)
   dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
   return dataFrame
