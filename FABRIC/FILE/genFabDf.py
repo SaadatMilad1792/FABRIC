@@ -21,7 +21,7 @@ def bsObjectCompact(params, expType, dataFile):
   return result
 
 #######################################################################################################################
-## -- binary stream object generator -- ###############################################################################
+## -- FABRIC data frame generator -- ##################################################################################
 #######################################################################################################################
 def genFabDf(params):
   
@@ -42,7 +42,7 @@ def genFabDf(params):
     print(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
     sys.exit(f"[-] Unknown Experiment Type Detected, Process Terminated. Allowed Types: {experimentTypes}")
   elif debuggingMode:
-    expTypes = expTypes[:1]
+    expTypes = expTypes[:3]
 
   if os.path.isdir(outDirectory):
     outFullPath = os.path.join(outDirectory, outFolder)
@@ -59,7 +59,7 @@ def genFabDf(params):
       dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
       
       if debuggingMode:
-        dataFiles = dataFiles[:1]
+        dataFiles = dataFiles[:3]
     
       for fc, dataFile in enumerate(dataFiles):
         print(f"{dataFiles[fc]}".ljust(24), f" | Progress: ".ljust(12),
@@ -75,7 +75,7 @@ def genFabDf(params):
         dataFiles = [f for f in dataFiles if f.split(".")[1] == dfType]
         
         if debuggingMode:
-          dataFiles = dataFiles[:1]
+          dataFiles = dataFiles[:3]
 
         for fc, dataFile in enumerate(dataFiles):
           futures.append(executor.submit(bsObjectCompact, params, expType, dataFile))
@@ -95,5 +95,8 @@ def genFabDf(params):
   
   print(f"FABRIC [STATUS: DONE] -> Generated f'{outPickleName}.pkl.gz", flush = True)
   dataFrame = pd.concat(dataFrame).reset_index(drop = True)
-  dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f'{outPickleName}.pkl.gz'), compression = 'gzip')
+  if debuggingMode:
+    dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f"{outPickleName}_test.pkl.gz"), compression = "gzip")
+  else:
+    dataFrame.to_pickle(os.path.join(outDirectory, outFolder, f"{outPickleName}.pkl.gz"), compression = "gzip")
   return dataFrame
