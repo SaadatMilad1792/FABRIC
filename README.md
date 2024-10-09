@@ -15,7 +15,7 @@ Fatigue and Balance Relationship Interaction Computation (F.A.B.R.I.C)
 FABRIC is a package designed to assist with preprocessing tasks and is equipped with multiple analytical and visualization 
 tools to streamline data preparation. This facilitates greater uniformity for researchers working on the relationship between
 fatigue and balance. FABRIC utilizes [AMTIbsf](https://github.com/BMClab/BMC/blob/master/functions/AMTIbsf.py), developed by
-[Renato Naville Watanabe](https://github.com/rnwatanabe), to extract data from `.bsf` files and creates a more comprehensive 
+[Marcos Duarte](https://github.com/demotu/BMC), to extract data from `.bsf` files and creates a more comprehensive 
 pandas DataFrame that is readily available for analysis.
 
 Each `.bsf` file contains 30 seconds of data from a subject, sampled at a rate of 1000 frames per second. This results in a 
