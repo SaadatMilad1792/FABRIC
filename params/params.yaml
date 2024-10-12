@@ -21,7 +21,7 @@
   ## -- 3.0: [visytic: LAUNCH] analytical tools module -- ##
   "visytic": {
     "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "prc",
-    "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
+    "outDirectory": "/esplabdata/FABRIC", "outFolder": "img",
     "inpPickleName": "UNIVERSAL_FABRIC", "funcStat": False,
     "groupFilter": ["expType", "stabilityStatus", "eyeStatus"],
     
