@@ -36,9 +36,9 @@ def featPlot(params, gpFilter, groupDat):
     avgPost, stdPost = np.mean(featPost), np.std(featPost)
     medPre, medPost = np.median(featPre), np.median(featPost)
 
-    avgChange = ((avgPost - avgPre) / avgPre) * 100
-    stdChange = ((stdPost - stdPre) / stdPre) * 100
-    medChange = ((medPost - medPre) / medPre) * 100
+    avgChange = ((avgPost - avgPre) / np.abs(avgPre)) * 100
+    stdChange = ((stdPost - stdPre) / np.abs(stdPre)) * 100
+    medChange = ((medPost - medPre) / np.abs(medPre)) * 100
 
     avgArr = '↑' if avgChange > 0 else '↓'
     stdArr = '↑' if stdChange > 0 else '↓'
