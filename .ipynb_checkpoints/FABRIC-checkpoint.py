@@ -7,6 +7,7 @@ import FABRIC
 def main():
   params = FABRIC.loadArgs('./params/params.yaml')
   FABRIC.genFabDf(params)
+  FABRIC.analytic(params)
 
 if __name__ == "__main__":
   main()
