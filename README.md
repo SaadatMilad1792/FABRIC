@@ -163,6 +163,12 @@ The image below shows the information stored in each row of the dataframe:
 
 
 ### FABRIC Analytic Tools
+FABRIC equipped with analytic tools. You can set the parameters from the parameter `.yaml` file under `visytic` sub module name. After running 
+analytic module from FABRIC, the tool will automatically generate all the plots under a specific groupFilter for you, and saves it to the output
+directory provided by you. As an instance, if you set groupFilter, to create groups based on experimentType, and eyeStatus, `FABRIC.analytic` will 
+generate $N_{et} \times N_{es} \times N_{pc}$ where $N_{et}$ is the number of experimentTypes chosen, $N_{es}$ is the eye status (Open, Close), 
+and lastly $N_{pc}$ is the plot count per setup (box plots, histograms, etc.), in this case the resulting value, with default parameters will be 20 
+plots in total.
 
 
 ### References And Acknowledgement
