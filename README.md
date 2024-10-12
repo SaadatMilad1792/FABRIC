@@ -73,7 +73,7 @@ params = FABRIC.loadArgs('./{directory to params}/params.yaml')
 process_params = params["process"]
 ```
 
-Here is the default values stored in the paremeter file, in this section we will provide in depth explanation for each and
+Here are the default values stored in the paremeter file, in this section we will provide in depth explanation for each and
 everyone of them. Keep in mind that in order for this code to work on your machine, you need to properly adjust the input
 and output directories, and activate tools by setting `funcStat` to `True`, which is always `False` by default.
 ```yaml

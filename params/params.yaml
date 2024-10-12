@@ -23,5 +23,12 @@
     "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "prc",
     "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
     "inpPickleName": "UNIVERSAL_FABRIC", "funcStat": False,
+    "groupFilter": ["expType", "stabilityStatus", "eyeStatus"],
+    
   },
+  
+  ## -- 4.0: [featPlt: LAUNCH] feature plotting module -- ##
+  "featPlt": {
+  },
+  
 }

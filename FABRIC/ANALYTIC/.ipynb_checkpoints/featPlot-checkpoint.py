@@ -3,11 +3,13 @@
 #######################################################################################################################
 import os
 import pandas as pd
+from ..FILE import *
+import matplotlib.pyplot as plt
 
 #######################################################################################################################
 ## -- binary stream object generator -- ###############################################################################
 #######################################################################################################################
-def analytic(params):
+def featPlot(params):
   
   subParamObject = params["visytic"]
   inpPickleName, funcStat = subParamObject["inpPickleName"], subParamObject["funcStat"]
