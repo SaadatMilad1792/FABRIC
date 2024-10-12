@@ -22,23 +22,10 @@ def featPlot(params, gpFilter, groupDat):
   axes, plotList = axes.flatten(), []
 
   for fIndex, feat in enumerate(features):
-#     featPre, featPost = np.array(list(PRE[feat])), np.array(list(POST[feat]))
-#     zsFeatPre, zsFeatPost, threshold = np.abs(stats.zscore(featPre)), np.abs(stats.zscore(featPost)), 2
-#     idxPre, idxPost = np.where(zsFeatPre > threshold)[0], np.where(zsFeatPost > threshold)[0]
-
-#     featPre, featPost = np.delete(featPre, idxPre), np.delete(featPost, idxPost)
-
     featPre, featPost = np.array(list(PRE[feat])), np.array(list(POST[feat]))
-    Q1_pre, Q3_pre = np.percentile(featPre, 25), np.percentile(featPost, 25)
-    Q1_post, Q3_post = np.percentile(featPre, 75), np.percentile(featPost, 75)
-    IQR_pre, IQR_post = Q3_pre - Q1_pre, Q3_post - Q1_post
-    threshold = 1.5
+    zsFeatPre, zsFeatPost, threshold = np.abs(stats.zscore(featPre)), np.abs(stats.zscore(featPost)), 2
+    idxPre, idxPost = np.where(zsFeatPre > threshold)[0], np.where(zsFeatPost > threshold)[0]
 
-    lower_bound_pre, upper_bound_pre = Q1_pre - threshold * IQR_pre, Q3_pre + threshold * IQR_pre
-    lower_bound_post, upper_bound_post = Q1_post - threshold * IQR_post, Q3_post + threshold * IQR_post
-
-    idxPre = np.where((featPre < lower_bound_pre) | (featPre > upper_bound_pre))[0]
-    idxPost = np.where((featPost < lower_bound_post) | (featPost > upper_bound_post))[0]
     featPre, featPost = np.delete(featPre, idxPre), np.delete(featPost, idxPost)
 
     sns.boxplot(data = [featPre, featPost], palette = "pastel", ax = axes[fIndex])
