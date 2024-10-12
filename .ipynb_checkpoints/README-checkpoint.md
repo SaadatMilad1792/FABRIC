@@ -88,11 +88,25 @@ and output directories, and activate tools by setting `funcStat` to `True`, whic
     "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "raw",
     "outDirectory": "/esplabdata/FABRIC", "outFolder": "prc",
     "experimentTypes": ["SM", "SP", "MP", "M", "P"],
-    "outPickleName": "UNIVERSAL_FABRIC", "funcStat": True,
+    "outPickleName": "UNIVERSAL_FABRIC", "funcStat": False,
     "dfType": "bsf", "framePerSecond": 1000, "verbose": False,
-    "parallelProc": True, "maxWorker": 48, "featExtr": True,
-    "debuggingMode": True,
+    "parallelProc": True, "maxWorker": 16, "featExtr": True,
+    "debuggingMode": False,
   },
+  
+  ## -- 3.0: [visytic: LAUNCH] analytical tools module -- ##
+  "visytic": {
+    "inpDirectory": "/esplabdata/FABRIC", "inpFolder": "prc",
+    "outDirectory": "/esplabdata/FABRIC", "outFolder": "img",
+    "inpPickleName": "UNIVERSAL_FABRIC", "funcStat": False,
+    "groupFilter": ["expType", "stabilityStatus", "eyeStatus"],
+    
+  },
+  
+  ## -- 4.0: [featPlt: LAUNCH] feature plotting module -- ##
+  "featPlt": {
+  },
+  
 }
 ```
 
@@ -117,6 +131,13 @@ altering these values in the `.yaml` file, unless you explicitly intend to do so
 | process    | maxWorker                 | Maximum number of workers (Only when parallelProc is set to True)                       |
 | process    | featExtr                  | Enables or disables feature extraction on the data frame                                |
 | process    | debuggingMode             | Limits the size of input files to a single `.bsf` file for debugging                    |
+| visytic    | inpDirectory              | Path to input directory (NOTE: exclude the folder name)                                 |
+| visytic    | inpFolder                 | Name of the input folder (NOTE: This is a name not a path                               |
+| visytic    | outDirectory              | Path to output directory (NOTE: exclude the folder name)                                |
+| visytic    | outFolder                 | Name of the output folder (NOTE: This is a name not a path                              |
+| visytic    | inpPickleName             | Name of the input pickle file that is loaded for plot generation                        |
+| visytic    | funcStat                  | Enables or disables methods, always set to False initially, set to True for activation  |
+| visytic    | groupFilter               | Filters the plot based on this choice, please do not change for now, it is not stable   |
 
 **NOTE:** FABRIC leverages parallelism to optimize performance. However, it’s essential to find the right balance in CPU allocation; having 
 too few CPUs can be as detrimental as having too many due to the communication overhead between them. Carefully choose the `maxWorker` value 

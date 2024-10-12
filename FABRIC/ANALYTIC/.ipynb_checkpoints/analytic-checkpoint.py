@@ -3,6 +3,8 @@
 #######################################################################################################################
 import os
 import pandas as pd
+import matplotlib.pyplot as plt
+from ..ANALYTIC import *
 
 #######################################################################################################################
 ## -- binary stream object generator -- ###############################################################################
@@ -13,6 +15,7 @@ def analytic(params):
   inpPickleName, funcStat = subParamObject["inpPickleName"], subParamObject["funcStat"]
   inpDirectory, inpFolder = subParamObject["inpDirectory"], subParamObject["inpFolder"]
   outDirectory, outFolder = subParamObject["outDirectory"], subParamObject["outFolder"]
+  groupFilter = subParamObject["groupFilter"]
   
   if not funcStat:
     print(f"[+] FABRIC: analytic marked as deactive, modify param.yaml for activation.")
@@ -20,9 +23,13 @@ def analytic(params):
   
   dataFrame = pd.read_pickle(os.path.join(inpDirectory, inpFolder, f"{inpPickleName}.pkl.gz"), compression = "gzip")
   
-  PRE = dataFrame[dataFrame["expStage"] == "PRE"]["mean_value_ML"].mean()
-  PST = dataFrame[dataFrame["expStage"] == "POST"]["mean_value_ML"].mean()
-  print(PRE, PST)
-  plt.plot([PRE, PST])
-  
-  return dataFrame
+  groups = dataFrame.groupby(groupFilter)
+  for gpFilter, groupDat in groups:
+    if not "Unknown" in gpFilter:
+      plotList = featPlot(params, gpFilter, groupDat)
+      plotList[0].savefig(os.path.join(outDirectory, outFolder, f"{'boxPlt_' + '_'.join(gpFilter)}.png"))
+      plotList[1].savefig(os.path.join(outDirectory, outFolder, f"{'hstPlt_' + '_'.join(gpFilter)}.png"))
+    else:
+      pass
+    
+  return True
