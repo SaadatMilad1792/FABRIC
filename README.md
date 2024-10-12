@@ -6,9 +6,9 @@ Fatigue and Balance Relationship Interaction Computation (F.A.B.R.I.C)
 |     | Section                                                                 | Description                                         | Last updated   |
 | --- | ----------------------------------------------------------------------- | --------------------------------------------------- | -------------- |
 |  1  | [Getting Started With FABRIC](#Getting-Started-With-FABRIC)             | Instructions on getting started with FABRIC         | 10/07/2024     |
-|  2  | [Parameter Manipulation](#Parameter-Manipulation)                       | Instructions on changing the parameters accordingly | 10/08/2024     |
-|  3  | [FABRIC Processing Tools](#FABRIC-Processing-Tools)                     | FABRIC Guide on available processing tools          | 10/06/2024     |
-|  4  | [FABRIC Analytic Tools](#FABRIC-Analytic-Tools)                         | FABRIC Guide on available analytic tools            | 10/06/2024     |
+|  2  | [Parameter Manipulation](#Parameter-Manipulation)                       | Instructions on changing the parameters accordingly | 10/12/2024     |
+|  3  | [FABRIC Processing Tools](#FABRIC-Processing-Tools)                     | FABRIC Guide on available processing tools          | 10/12/2024     |
+|  4  | [FABRIC Analytic Tools](#FABRIC-Analytic-Tools)                         | FABRIC Guide on available analytic tools            | 10/12/2024     |
 |  5  | [References And Acknowledgement](#References-And-Acknowledgement)       | FABRIC References And Acknowledgement               | 10/06/2024     |
 
 ### Getting Started With FABRIC
